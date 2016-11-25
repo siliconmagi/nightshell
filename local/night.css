@@ -1,0 +1,70 @@
+body {
+  background-color: #8A3C3C
+}
+.uk-navbar {
+  position: fixed;
+  top:0px;
+  z-index: 100;
+}
+.logo {
+  height: 40px;
+  padding-right: 10px;
+}
+.uk-panel {
+  padding: 10px;
+  text-align: center;
+}
+.uk-navbar {
+  background-image: linear-gradient(to bottom,#8A3C3C,#5d4040);
+}
+.uk-offcanvas-bar {
+  background: #8A3C3C;
+}
+.uk-navbar-toggle {
+  color: white;
+}
+
+.uk-navbar {
+  color: white;
+  box-shadow: 5px 5px 5px black;
+
+}
+body {
+  color: white;
+}
+.uk-subnav > * > *{
+  color: white;
+}
+h2 {
+  color: white;
+}
+.uk-navbar-brand {
+  color: white;
+}
+.uk-navbar-nav > li > a {
+  color: white;
+  text-shadow: 0 1px 0 #774040;
+
+}
+.uk-navbar-brand, .uk-navbar-content, .uk-navbar-toggle {
+  text-shadow: 0 1px 0 #774040;
+}
+.uk-container-center {
+  padding-top: 60px;
+}
+/* Panel CSS */
+.uk-panel {
+  padding: 20px;
+}
+
+.uk-navbar-nav > li.uk-open > a, .uk-navbar-nav > li:hover > a, .uk-navbar-nav > li > a:focus {
+  color: #F6A25B;
+}
+.uk-navbar-brand:focus, .uk-navbar-brand:hover {
+  color: #F6A25B;
+}
+.uk-nav-offcanvas > .uk-open > a, html:not(.uk-touch) .uk-nav-offcanvas > li > a:focus, html:not(.uk-touch) .uk-nav-offcanvas > li > a:hover {
+  color: #F6A25B;
+
+}
+

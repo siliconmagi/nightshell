@@ -1,14 +1,14 @@
 # Serving HTML through API Gateway for AWS Lambda
-service: serve-html
+service: night 
 
 provider:
   name: aws
   runtime: nodejs4.3
 
 functions:
-  staticHtml:
+  night:
     handler: handler.html
     events:
       - http:
           method: get
-          path: home
+          path: / 
