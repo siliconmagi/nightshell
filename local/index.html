@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aul Hype</title>
+    <title>Silicon Magi</title>
     <!-- CSS imports -->
     <link href="/uikit.min.css" rel="stylesheet" type="text/css">
     <link href="/uikit.gradient.min.css" rel="stylesheet" type="text/css">
@@ -33,9 +33,9 @@
   </head>
   <!-- Body -->
   <body>
-    <!-- Stripe -->
+    <!-- Stripe Payment Form -->
     <div class="uk-container uk-container-center">
-      <form action="/your-charge-code" method="POST" id="payment-form">
+      <form action="/stripeCharge" method="POST" id="payment-form">
         <span class="payment-errors"></span>
         <div class="form-row">
           <label>
@@ -65,21 +65,21 @@
       <div class="uk-margin" >
         <nav class="uk-navbar">
           <a href="#offcanvas-1" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
-          <a class="uk-navbar-brand uk-hidden-small" href="#home" data-uk-smooth-scroll><img class="logo" src="https://cdn.rawgit.com/siliconmagi/pictures/master/atar.svg" alt="Aul Hype logo">Aul Hype</a>
+          <a class="uk-navbar-brand uk-hidden-small" href="#home" data-uk-smooth-scroll><img class="logo" src="https://cdn.rawgit.com/siliconmagi/pictures/master/atar.svg" alt="Silicon Magi logo">Silicon Magi</a>
           <ul class="uk-navbar-nav uk-hidden-small">
             <li><a href="#home" data-uk-smooth-scroll><i class="uk-icon-home uk-icon-large"></i>Home</a></li>
             <li><a href="#portfolio" data-uk-smooth-scroll><i class="uk-icon-magic uk-icon-large"></i>Portfolio</a></li>
             <li><a href="#aboutme" data-uk-smooth-scroll><i class="uk-icon-fire uk-icon-large"></i>About Me</a></li>
             <li><a href="#contact" data-uk-smooth-scroll><i class="uk-icon-user uk-icon-large"></i>Contact</a></li>
           </ul>
-          <div class="uk-navbar-content uk-visible-small uk-display-inline-block"><img class="logo" src="https://cdn.rawgit.com/siliconmagi/pictures/master/atar.svg" alt="Aul Hype logo">Aul Hype</div>
+          <div class="uk-navbar-content uk-visible-small uk-display-inline-block"><img class="logo" src="https://cdn.rawgit.com/siliconmagi/pictures/master/atar.svg" alt="Silicon Magi logo">Silicon Magi</div>
         </nav>
       </div>
       <!-- Offcanvas section -->
       <div id="offcanvas-1" class="uk-offcanvas">
         <div class="uk-offcanvas-bar">
           <ul class="uk-nav uk-nav-offcanvas uk-nav-parent-icon" data-uk-nav>
-            <li><a href="#home" data-uk-smooth-scroll><img class="logo" src="https://cdn.rawgit.com/siliconmagi/pictures/master/atar.svg" alt="Aul Hype logo">Aul Hype</a></li>
+            <li><a href="#home" data-uk-smooth-scroll><img class="logo" src="https://cdn.rawgit.com/siliconmagi/pictures/master/atar.svg" alt="Silicon Magi logo">Silicon Magi</a></li>
             <li><a href="#home" data-uk-smooth-scroll><i class="uk-icon-home uk-icon-large"></i>Home</a></li>
             <li><a href="#portfolio" data-uk-smooth-scroll><i class="uk-icon-magic uk-icon-large"></i>Portfolio</a></li>
             <li><a href="#aboutme" data-uk-smooth-scroll><i class="uk-icon-fire uk-icon-large"></i>About Me</a></li>
@@ -161,10 +161,12 @@
     <script src="/smooth-scroll.min.js"></script>
     <script src="/grid.min.js"></script>
     <script src="/sticky.min.js"></script>
-    <script src="/stripe.min.js"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <!-- Set Stripe Key -->
     <script type="text/javascript">
 Stripe.setPublishableKey('pk_test_Wkzi7vlivJrsgqpD1a05ndPk');
     </script>
+    <!-- Create Token -->
     <script>
 $(function() {
   var $form = $('#payment-form');
@@ -180,6 +182,30 @@ $(function() {
   });
 });
     </script>
+    <!-- Stripe Response Handler -->
+    <script>
+function stripeResponseHandler(status, response) {
+  // Grab the form:
+  var $form = $('#payment-form');
 
+  if (response.error) { // Problem!
+
+    // Show the errors on the form:
+    $form.find('.payment-errors').text(response.error.message);
+    $form.find('.submit').prop('disabled', false); // Re-enable submission
+
+  } else { // Token was created!
+
+    // Get the token ID:
+    var token = response.id;
+
+    // Insert the token ID into the form so it gets submitted to the server:
+    $form.append($('<input type="hidden" name="stripeToken">').val(token));
+
+    // Submit the form:
+    $form.get(0).submit();
+  }
+};
+    </script>
   </body>
 </html>
