@@ -1,6 +1,14 @@
 # Serving HTML through API Gateway for AWS Lambda
 service: night 
 
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    babelOptions:
+      presets: ["es2015", "stage-2"]
+
 provider:
   name: aws
   runtime: nodejs4.3
@@ -11,12 +19,4 @@ functions:
     events:
       - http:
           method: get
-          path: / 
-  stripeCharge:
-    handler: handler.stripeCharge
-    events:
-      - http: 
-          method: get 
-          path: stripeCharge
-plugins:
-  - serverless-webpack
+          path: /
