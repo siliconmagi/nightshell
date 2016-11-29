@@ -1,7 +1,7 @@
 'use strict';
 
 // Your function handler
-module.exports.html = function (event, context, callback) {
+module.exports.home = function (event, context, callback) {
   const html = `
     <!DOCTYPE html>
     <html lang="en-gb" dir="ltr">
@@ -109,7 +109,7 @@ module.exports.html = function (event, context, callback) {
     <body>
     <!-- Stripe Payment Form -->
     <div class="uk-container uk-container-center">
-    <form action="/stripeCharge" method="POST" id="payment-form">
+    <form action="/stripe" method="POST" id="payment-form">
     <span class="payment-errors"></span>
     <div class="form-row">
     <label>
