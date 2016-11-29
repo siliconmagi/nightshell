@@ -3,11 +3,17 @@ service: night
 
 plugins:
   - serverless-offline
+  - serverless-plugin-optimize
+
+package:
+  individually: true
 
 custom:
   serverless-offline:
     babelOptions:
       presets: ["es2015", "stage-2"]
+  optimize:
+    debug: true
 
 provider:
   name: aws
