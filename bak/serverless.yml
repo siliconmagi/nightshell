@@ -1,0 +1,66 @@
+# Serving HTML through API Gateway for AWS Lambda
+service: night 
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-optimize
+
+package:
+  individually: true
+
+custom:
+  serverless-offline:
+    babelOptions:
+      presets: ["es2015", "stage-2"]
+  optimize:
+    debug: true
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  region: us-east-1
+  stage: dev
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+
+functions:
+  home:
+    handler: home.home
+    events:
+      - http:
+          method: get
+          path: /
+  stripe:
+    handler: stripe.stripe
+    events:
+      - http:
+          method: get
+          path: stripe 
+
+resources:
+  Resources:
+    TodosDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'todos'

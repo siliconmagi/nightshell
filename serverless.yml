@@ -46,21 +46,45 @@ functions:
           method: get
           path: stripe 
 
+
 resources:
   Resources:
-    TodosDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
+    zergS3:
+      Type: AWS::S3::Bucket
       Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: 'todos'
+        AccessControl: PublicRead
+    zergBP:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: zergS3
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource:
+              - Fn::Join:
+                - ''
+                - - 'arn:aws:s3:::'
+                  - Ref: zergS3 
+                  - "/*"
+    zergCF:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+          - DomainName:
+              Fn::GetAtt:
+              - zergS3
+              - DomainName
+            Id: myS3Origin
+            S3OriginConfig: {}
+          Enabled: 'true'
+          DefaultCacheBehavior:
+            TargetOriginId: myS3Origin
+            ForwardedValues:
+              QueryString: 'false'
+            ViewerProtocolPolicy: allow-all

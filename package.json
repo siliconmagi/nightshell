@@ -1,0 +1,20 @@
+{
+  "name": "todos",
+  "version": "0.1.0",
+  "description": "Todo service built with Serverless",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.6.7",
+    "uuid": "^2.0.3"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "serverless-offline": "^3.4.1",
+    "serverless-plugin-optimize": "^1.0.0-rc.8"
+  }
+}
