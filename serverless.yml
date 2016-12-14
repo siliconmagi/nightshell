@@ -1,4 +1,4 @@
-# Serving HTML through API Gateway for AWS Lambda
+# Nightshell.com blog portfolio website 
 service: night 
 
 plugins:
@@ -20,17 +20,6 @@ provider:
   runtime: nodejs4.3
   region: us-east-1
   stage: dev
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
   home:
@@ -46,18 +35,17 @@ functions:
           method: get
           path: stripe 
 
-
 resources:
   Resources:
-    zergS3:
+    mazdas3:
       Type: AWS::S3::Bucket
       Properties:
         AccessControl: PublicRead
-    zergBP:
+    mazdabp:
       Type: AWS::S3::BucketPolicy
       Properties:
         Bucket:
-          Ref: zergS3
+          Ref: mazdas3
         PolicyDocument:
           Statement:
             - Sid: PublicReadGetObject
@@ -69,22 +57,23 @@ resources:
               - Fn::Join:
                 - ''
                 - - 'arn:aws:s3:::'
-                  - Ref: zergS3 
+                  - Ref: mazdas3 
                   - "/*"
-    zergCF:
+    mazdacf:
       Type: AWS::CloudFront::Distribution
       Properties:
         DistributionConfig:
           Origins:
           - DomainName:
               Fn::GetAtt:
-              - zergS3
+              - mazdas3
               - DomainName
             Id: myS3Origin
             S3OriginConfig: {}
           Enabled: 'true'
           DefaultCacheBehavior:
             TargetOriginId: myS3Origin
+            Compress: 'true'
             ForwardedValues:
               QueryString: 'false'
             ViewerProtocolPolicy: allow-all
